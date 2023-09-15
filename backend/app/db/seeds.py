@@ -1,7 +1,11 @@
 from sqlalchemy.sql import text
-from sqlalchemy import engine
 import random
 import string
+from sqlalchemy import create_engine
+import os
+
+database_url = os.environ['DATABASE_URL'].replace("postgres://", "postgresql://")
+engine = create_engine(database_url, echo=False)
 
 user_insert_statement = text("""INSERT INTO users(username, email, salt, bio, hashed_password) VALUES(:username, :email, :salt, :bio, :hashed_password) ON CONFLICT DO NOTHING""")
 select_last_user_id = text("""SELECT * FROM users ORDER BY id DESC LIMIT 1""")
